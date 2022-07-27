@@ -4,6 +4,7 @@ import Editor from "./components/Editor"
 import { data } from "./data"
 import Split from "react-split"
 import {nanoid} from "nanoid"
+import {useState, useEffect} from "react"
 
 /**
  * Challenge: Spend 10-20+ minutes reading through the code
@@ -16,10 +17,14 @@ import {nanoid} from "nanoid"
 export default function App() {
     
     // localStorage.clear()
-    const [notes, setNotes] = React.useState(Object.entries(localStorage).map(([id, body]) => ({"id": id, "body": JSON.parse(body)})) || [])
-    const [currentNoteId, setCurrentNoteId] = React.useState(
+    const [notes, setNotes] = useState(JSON.parse(localStorage.getItem("notes")) || [])
+    const [currentNoteId, setCurrentNoteId] = useState(
         (notes[0] && notes[0].id) || ""
     )
+
+    useEffect(() => {
+      localStorage.setItem("notes", JSON.stringify(notes))
+    }, [notes])
 
     function createNewNote() {
         const newNote = {
@@ -27,12 +32,9 @@ export default function App() {
             body: "# Type your markdown note's title here"
         }
         setNotes(prevNotes => [newNote, ...prevNotes])
-        localStorage.setItem(newNote.id, JSON.stringify(newNote.body))
         setCurrentNoteId(newNote.id)
         
     }
-    
-    console.log(notes)
 
     function updateNote(text) {
         setNotes(oldNotes => oldNotes.map(oldNote => {
@@ -40,7 +42,6 @@ export default function App() {
                 ? { ...oldNote, body: text }
                 : oldNote
         }))
-        localStorage.setItem(currentNoteId, JSON.stringify(text))
 
     }
     
