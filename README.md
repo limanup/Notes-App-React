@@ -10,7 +10,7 @@ When user edits an old note, the edited note's position will be brought to the t
 
 ### Main Page When No Notes Exist
 
-![main page](illustrations/notes-app-main-page.png =720x)
+![main page](illustrations/notes-app-main-page.png | width=720)
 
 ### Create New Notes
 
